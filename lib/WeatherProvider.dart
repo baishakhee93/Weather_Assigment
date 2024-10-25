@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 
 class WeatherProvider with ChangeNotifier {
-  String apiKey = 'ea7537a99cb9f52db8db7d0c84557510'; // Insert your OpenWeather API key here
+  String apiKey = 'YOUR API Key'; // Insert your OpenWeather API key here
   String city = "Ameerpet";
   String description = "";
   double temperature = 0;
