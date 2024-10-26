@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 
+import 'HourlyForecast.dart';
+
 class WeatherProvider with ChangeNotifier {
   String apiKey = 'ea7537a99cb9f52db8db7d0c84557510'; // Insert your OpenWeather API key here
-  String city = "Ameerpet";
+  String city = " ";
   String description = "";
   double temperature = 0;
   int humidity = 0;
   double windSpeed = 0;
   String iconCode = "";
   bool isLoading = true;
+  List<HourlyForecast> hourlyForecast = [];
 
   Future<void> fetchWeather({String? cityName}) async {
     String url;
@@ -32,6 +35,17 @@ class WeatherProvider with ChangeNotifier {
         humidity = data['main']['humidity'];
         windSpeed = data['wind']['speed'];
         iconCode = data['weather'][0]['icon'];
+
+        // Update hourly forecast
+        hourlyForecast = (data['hourly'] as List)
+            .take(24) // Take only the next 24 hours
+            .map((hour) => HourlyForecast(
+          time: DateTime.fromMillisecondsSinceEpoch(hour['dt'] * 1000).toLocal().hour.toString().padLeft(2, '0') + ":00",
+          iconCode: hour['weather'][0]['icon'],
+          temperature: hour['temp'].toDouble(),
+        ))
+            .toList();
+
         isLoading = false;
         notifyListeners();
       } else {

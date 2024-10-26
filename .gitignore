@@ -1,4 +1,8 @@
-# Miscellaneous
+dart_tool/
+.packages
+build/
+# If you're building an application, you may want to check-in your pubspec.lock
+pubspec.lock
 *.class
 *.log
 *.pyc
